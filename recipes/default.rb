@@ -50,5 +50,3 @@ end
 # TODO: somehow add this line to php.ini (is this necessary?)
 # zend_extension="/usr/local/php/modules/xdebug.so"
 
-[ZendModules]
-Xdebug

@@ -22,6 +22,10 @@
 
 include_recipe "php"
 
+package "make" do
+  action :install
+end
+
 # install xdebug apache module
 php_pear "xdebug" do
   version node['xdebug']['version']

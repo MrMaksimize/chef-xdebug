@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ "$1" = "enable" ]; then
+  if [ -f "/etc/php5/conf.d/10_xdebug_disabled.ini" ]; then
+    sudo rm /etc/php5/conf.d/10_xdebug_disabled.ini
+    sudo cp /usr/share/php5/10_xdebug_enabled.ini /etc/php5/conf.d
+    #sudo cp /usr/share/php5/20_xdebug_custom.ini /etc/php5/conf.d
+    sudo service apache2 restart
+    echo "Xdebug enabled."
+  else
+    echo "Xdebug is already enabled."
+  fi
+elif [ "$1" = "disable" ]; then
+  if [ -f "/etc/php5/conf.d/10_xdebug_enabled.ini" ]; then
+    sudo rm /etc/php5/conf.d/10_xdebug_enabled.ini
+    #sudo rm /etc/php5/conf.d/20_xdebug_custom.ini
+    sudo cp /usr/share/php5/10_xdebug_disabled.ini /etc/php5/conf.d
+    sudo service apache2 restart
+    echo "Xdebug disabled."
+  else
+    echo "Xdebug is already disabled."
+  fi
+else
+  echo "Usage: xdebug [enable | disable]"
+fi

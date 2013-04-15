@@ -32,9 +32,26 @@ php_pear "xdebug" do
   action :install
 end
 
+cookbook_file "/usr/share/php5/10_xdebug_disabled.ini" do
+  owner "root"
+  group "root"
+  mode 0644
+  source "10_xdebug_disabled.ini"
+  action :create
+end
+
+cookbook_file "/usr/local/bin/xdebug" do
+  owner "root"
+  group "root"
+  mode 0755
+  source "xdebug"
+  action :create
+end
+
 # copy over xdebug.ini to node
-template "#{node['php']['ext_conf_dir']}/xdebug.ini" do
-  source "xdebug.ini.erb"
+#template "#{node['php']['ext_conf_dir']}/xdebug.ini" do
+template "/usr/share/php5/10_xdebug_enabled.ini" do
+  source "10_xdebug_enabled.ini.erb"
   owner "root"
   group "root"
   mode 0644
@@ -42,6 +59,16 @@ template "#{node['php']['ext_conf_dir']}/xdebug.ini" do
   # variable( :extension_dir => node['php']['php_extension_dir'] )
   notifies :restart, resources("service[apache2]"), :delayed
 end
+
+execute "set-up-xdebug" do
+  command "cp /usr/share/php5/10_xdebug_disabled.ini /etc/php5/conf.d"
+  #path "/usr/bin:/usr/sbin:/bin:/usr/local/bin:/sbin"
+  not_if "test -f /etc/php5/conf.d/10_xdebug_disabled.ini || test -f /etc/php5/conf.d/10_xdebug_enabled.ini"
+  action :run
+end
+
+
+
 
 file node['xdebug']['remote_log'] do
   owner "root"

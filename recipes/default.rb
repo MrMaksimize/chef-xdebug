@@ -67,7 +67,9 @@ execute "set-up-xdebug" do
   action :run
 end
 
-
+file "/etc/php5/conf.d/xdebug.ini" do
+  action :delete
+end
 
 
 file node['xdebug']['remote_log'] do
